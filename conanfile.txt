@@ -1,0 +1,7 @@
+[requires]
+rtmidi/6.0.0
+raylib/5.0
+
+[generators]
+CMakeDeps
+CMakeToolchain
