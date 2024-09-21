@@ -2,6 +2,9 @@ cmake_minimum_required(VERSION 3.15)
 project(Piano)
 add_executable(piano src/main.cpp)
 
+find_path(RAYGUI_INCLUDE_DIRS "src/raygui.h")
+target_include_directories(piano PRIVATE ${RAYGUI_INCLUDE_DIRS})
+
 find_package(RtMidi REQUIRED)
 target_link_libraries(piano RtMidi::rtmidi)
 

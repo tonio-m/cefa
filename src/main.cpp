@@ -1,9 +1,12 @@
+#include <raylib.h>
+#define RAYGUI_IMPLEMENTATION
+#include "raygui.h"
+
 #include <map>
 #include <regex>
 #include <cstdlib>
 #include <iostream>
 #include <RtMidi.h>
-#include <raylib.h>
 #include <unistd.h>
 #include <typeinfo>
 #include "piano.cpp"
