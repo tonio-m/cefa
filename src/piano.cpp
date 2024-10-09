@@ -2,19 +2,21 @@
 #include <RtMidi.h>
 
 std::array<bool, 36> PIANONOTESACTIVE;
-std::array<bool, 36> PIANONOTESBLUE;
 
 struct Piano {
     RtMidiIn *midiin = nullptr;
     std::array<Rectangle, 36> shapes;
+    std::vector<std::vector<int>> blueChords;
     std::vector<int> blackKeys = {1, 3, 6, 8, 10, 13, 15, 18, 20, 22, 25, 27, 30, 32, 34};
-    std::array<std::string, 12> noteSymbols = {"c", "c#", "d", "d#", "e", "f", "f#", "g", "g#", "a", "a#", "b"};
     std::vector<int> whiteKeys = {0, 2, 4, 5, 7, 9, 11, 12, 14, 16, 17, 19, 21, 23, 24, 26, 28, 29, 31, 33, 35};
+    int numOctaves = 3;
+
     Piano(float startingX, float startingY, float size) {
         int octave = 0;
         float keyWidth = size;
         float keyHeight = size * 5.0f;
-        for (int octave = 0; octave < 3; octave++){
+
+        for (int octave = 0; octave < numOctaves; octave++){
             shapes[(octave*12)+0] = {  startingX,                      startingY,   keyWidth * 1.5f, keyHeight };    // c
             shapes[(octave*12)+2] = {  startingX + 1.5f *  keyWidth,   startingY,   keyWidth * 1.5f, keyHeight };    // d
             shapes[(octave*12)+4] = {  startingX + 3.0f *     keyWidth,   startingY,   keyWidth * 1.5f, keyHeight }; // e
@@ -22,6 +24,7 @@ struct Piano {
             shapes[(octave*12)+7] = {  startingX + 6.0f *     keyWidth,   startingY,   keyWidth * 1.5f, keyHeight }; // g
             shapes[(octave*12)+9] = {  startingX + 7.5f *     keyWidth,   startingY,   keyWidth * 1.5f, keyHeight }; // a
             shapes[(octave*12)+11] = { startingX + 9.0f *    keyWidth,   startingY,   keyWidth * 1.5f, keyHeight };  // b
+
             shapes[(octave*12)+1] = {  startingX +      keyWidth,   startingY,   keyWidth, keyHeight * 0.7f};        // c#
             shapes[(octave*12)+3] = {  startingX + 2.5f *  keyWidth,   startingY,   keyWidth, keyHeight * 0.7f};     // d#
             shapes[(octave*12)+6] = {  startingX + 5.5f *  keyWidth,   startingY,   keyWidth, keyHeight * 0.7f};     // f#
@@ -30,42 +33,83 @@ struct Piano {
             startingX = startingX + 10.5f * keyWidth;
         }
     }
-    void drawNotes(std::vector<int> arr, bool black = false){
-        for (int i : arr) {
-            Color color = (black) ? BLACK : RAYWHITE;
-            if (PIANONOTESBLUE[i]) {
-                color = BLUE;
+
+    void pushBackChord(std::vector<int> blueChord){
+        std::cout << "Pushed blue chord: ";
+        for (int note : blueChord) std::cout << note << " ";
+        std::cout << std::endl;
+
+        blueChords.push_back(blueChord);
+    }
+
+    void printBlueChords(){
+        std::cout << "{";
+        for (std::vector<int> chord: blueChords){
+            std::cout << "{";
+            for (int note : chord) std::cout << note << " ";
+            std::cout << "}";
+        }
+        std::cout << "}" << std::endl;
+    }
+
+    void draw(){
+        Color color;
+
+    
+        if (!blueChords.empty()) {
+            std::vector<int> blueChord = blueChords.back();    
+    
+            std::vector<int> updatedBlueChord;
+            for (int note : blueChord) {
+                if (!PIANONOTESACTIVE[note]) {
+                    updatedBlueChord.push_back(note);
+                }
+            } 
+            if (updatedBlueChord.empty() && !blueChords.empty()){ 
+                std::cout << "current blue chord is empty, popping it from vector" << std::endl;
+                blueChords.pop_back();
+                if (!blueChords.empty()){
+                    updatedBlueChord = blueChords.back();
+                }
             }
-            else if (PIANONOTESACTIVE[i]) {
-                color = RED;
-                PIANONOTESBLUE[i] = false;
-            }
+            blueChord = updatedBlueChord;
+        }
+    
+        for (int i : whiteKeys) {
+            color = RAYWHITE;
+            if (PIANONOTESACTIVE[i]) color = RED;
+            else if (!blueChords.empty() && std::find(blueChords.back().begin(), blueChords.back().end(), i) != blueChords.back().end()) color = BLUE;
             DrawRectangleRec(shapes.at(i), color);
             DrawRectangleLinesEx(shapes.at(i), 2, BLACK);
         }
-    };
-    void draw(std::vector<int> blueChord){
-        for (auto i: blueChord){
-            PIANONOTESBLUE[i] = true;
+    
+        for (int i : blackKeys) {
+            color = BLACK;
+            if (PIANONOTESACTIVE[i]) color = RED;
+            else if (!blueChords.empty() && std::find(blueChords.back().begin(), blueChords.back().end(), i) != blueChords.back().end()) color = BLUE;
+            DrawRectangleRec(shapes.at(i), color);
+            DrawRectangleLinesEx(shapes.at(i), 2, BLACK);
         }
-        drawNotes(whiteKeys);
-        drawNotes(blackKeys,true);
     }
+
     std::string activeNotesString() const {
-        std::string _activeNotes;
+        std::string result;
+        std::array<std::string, 12> noteSymbols = {"c", "c#", "d", "d#", "e", "f", "f#", "g", "g#", "a", "a#", "b"};
         for (size_t i = 0; i < PIANONOTESACTIVE.size(); ++i) {
             if (PIANONOTESACTIVE[i]) {
-                _activeNotes += noteSymbols[i%12] + " ";
+                result += noteSymbols[i%12] + " ";
             }
         }
-        return _activeNotes;
+        return result;
     }
+
     static void midiCallback(double deltatime, std::vector<unsigned char> *message, void *userData) {
         if (message->size() > 1) {
             int noteIndex = static_cast<int>(message->at(1)) - 48;
             PIANONOTESACTIVE[noteIndex] = !(PIANONOTESACTIVE[noteIndex]);
         }
     }
+
     void initMidi(){
       try {
         midiin = new RtMidiIn(RtMidi::MACOSX_CORE);
@@ -78,3 +122,4 @@ struct Piano {
       }
     }
 };
+
