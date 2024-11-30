@@ -18,13 +18,15 @@ RtMidi which is being used supports other engines, it's just that I've hardcoded
 
 ```bash
 conan install . --output-folder=build --build=missing
+cp -r assets build/
 cd build
 cmake .. -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_EXPORT_COMPILE_COMMANDS=1
-cmake --build . && ./bin/piano
+cmake --build . && bin/piano
 ```
 
 ```bash
-cd build/ && cmake --build . && ./bin/piano
+cd build
+cmake --build . && bin/piano
 ```
 
 ### Debug Build 
