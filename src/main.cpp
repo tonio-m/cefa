@@ -6,7 +6,6 @@
 #include "midiHandler.h"
 #define RAYGUI_IMPLEMENTATION
 #include "../include/raygui/raygui.h"
-#include "../include/rfxgen/rfxgen.h"
 
 struct SceneController {
     enum Scene { SCENE_INPUT, SCENE_PIANO, SCENE_CONFIG };

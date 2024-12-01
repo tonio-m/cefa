@@ -42,47 +42,10 @@ struct Chord {
     std::string chordQuality;
     std::vector<int> value;
 
-    Chord& fromString(std::string string){            
-        std::smatch match;
-        static std::regex pattern("(^[A-Za-z]#?b?)(.*)$");
+    Chord& fromString(std::string string);
+    std::string notesString();
 
-        std::regex_match(string, match, pattern);
-    
-        std::string note = match[1].str();
-        std::string chordType = match[2].str();
-    
-        if ((noteMap.find(note) != noteMap.end()) && (qualityToVector.find(chordType) != qualityToVector.end())) {
-            value = qualityToVector[chordType](noteMap[note]);
-            return *this;
-        } else {
-            throw std::invalid_argument("Failed parsing chord for note " + note + " and chord type " + chordType + ".");
-        }
-    }
-
-    std::string notesString() {
-        std::string result;
-        for (int note : value){
-            result += noteStrings[note%12] + " ";
-        }
-        return result;
-    }
-
-
-    bool compareNotes(std::array<int,36>& activeNotes) {
-        for (int i : value){
-            if (!activeNotes[i]){
-                return false;
-            }
-        }
-        return true;
-    } 
+    bool compareNotes(std::array<int,36>& activeNotes);
 };
 
-std::vector<Chord> parseChords(std::vector<std::string> chords) {
-    std::vector<Chord> allChordNotes;
-    for (std::string chord : chords) {
-        Chord chordNotes = Chord().fromString(chord);
-        allChordNotes.push_back(chordNotes);
-    }
-    return allChordNotes;
-}
+std::vector<Chord> parseChords(std::vector<std::string> chords);
