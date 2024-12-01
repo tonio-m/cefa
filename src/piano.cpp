@@ -1,6 +1,5 @@
 #include "piano.h"
 
-
 Piano::~Piano(){
     for (auto& sound : pianoSounds) {
         // UnloadMusicStream(sound);
@@ -8,7 +7,6 @@ Piano::~Piano(){
     }
     CloseAudioDevice();
 }
-
 
 void Piano::initSound(){
     // TODO: solve this to a valid path for both built binary and debug build
@@ -130,18 +128,18 @@ void Piano::draw(Vector2 &windowSize, Chord &blueChord, std::array<int,36> &pian
     }
 }
 
-    void Piano::playSounds(std::array<int,36> &activeNotes, std::array<int,36> &pastActiveNotes){
-        // TODO: debug this, seems to not be working
-        for(size_t i = 0; i < activeNotes.size(); i++){
-            if (!(pastActiveNotes[i] == 1) && activeNotes[i] == 1){
-                std::cout << "Playing Note: " << i << std::endl;
-                if (IsSoundPlaying(pianoSounds[i])) {
-                    StopSound(pianoSounds[i]);
-                }
-                PlaySound(pianoSounds[i]);
+void Piano::playSounds(std::array<int,36> &activeNotes, std::array<int,36> &pastActiveNotes){
+    // TODO: debug this, seems to not be working
+    for(size_t i = 0; i < activeNotes.size(); i++){
+        if (!(pastActiveNotes[i] == 1) && activeNotes[i] == 1){
+            std::cout << "Playing Note: " << i << std::endl;
+            if (IsSoundPlaying(pianoSounds[i])) {
+                StopSound(pianoSounds[i]);
             }
+            PlaySound(pianoSounds[i]);
         }
     }
+}
 
 void dummyPcKeyboard(std::array<int, 36> &PIANONOTESACTIVE){
     static int keys[20] = { 
