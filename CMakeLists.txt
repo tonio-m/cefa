@@ -11,7 +11,6 @@ target_link_libraries(piano RtMidi::rtmidi)
 find_package(raylib REQUIRED)
 target_link_libraries(piano raylib)
 
-find_package(raygui REQUIRED)
 target_link_libraries(piano raygui)
 
 find_library(OpenGL_LIBRARY OpenGL)
