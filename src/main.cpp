@@ -59,13 +59,12 @@ struct SceneController {
     } context;
     Piano piano;
     MidiHandler midihandler;
-    Sound music;
 
     SceneController(){
         piano = Piano();
-        piano.initSound();
         midihandler = MidiHandler();
         midihandler.init();
+        piano.initSound();
     }
 
     void renderInputScene(){

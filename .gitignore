@@ -2,3 +2,6 @@ build
 CMakeCache.txt
 CMakeUserPresets.json
 CMakeFiles
+.DS_Store
+.cache/
+src/.DS_Store
