@@ -9,54 +9,46 @@ Piano::~Piano(){
 }
 
 void Piano::initSound(){
-    // TODO: solve this to a valid path for both built binary and debug build
-    soundFiles = {
-        "/Users/user/repos/cefa/assets/piano/c1.wav",
-        "/Users/user/repos/cefa/assets/piano/c1s.wav",
-        "/Users/user/repos/cefa/assets/piano/d1.wav",
-        "/Users/user/repos/cefa/assets/piano/d1s.wav",
-        "/Users/user/repos/cefa/assets/piano/e1.wav",
-        "/Users/user/repos/cefa/assets/piano/f1.wav",
-        "/Users/user/repos/cefa/assets/piano/f1s.wav",
-        "/Users/user/repos/cefa/assets/piano/g1.wav",
-        "/Users/user/repos/cefa/assets/piano/g1s.wav",
-        "/Users/user/repos/cefa/assets/piano/a1.wav",
-        "/Users/user/repos/cefa/assets/piano/a1s.wav",
-        "/Users/user/repos/cefa/assets/piano/b1.wav",
-        "/Users/user/repos/cefa/assets/piano/c2.wav",
-        "/Users/user/repos/cefa/assets/piano/c2s.wav",
-        "/Users/user/repos/cefa/assets/piano/d2.wav",
-        "/Users/user/repos/cefa/assets/piano/d2s.wav",
-        "/Users/user/repos/cefa/assets/piano/e2.wav",
-        "/Users/user/repos/cefa/assets/piano/f2.wav",
-        "/Users/user/repos/cefa/assets/piano/f2s.wav",
-        "/Users/user/repos/cefa/assets/piano/g2.wav",
-        "/Users/user/repos/cefa/assets/piano/g2s.wav",
-        "/Users/user/repos/cefa/assets/piano/a2.wav",
-        "/Users/user/repos/cefa/assets/piano/a2s.wav",
-        "/Users/user/repos/cefa/assets/piano/b2.wav",
-        "/Users/user/repos/cefa/assets/piano/c3.wav",
-        "/Users/user/repos/cefa/assets/piano/c3s.wav",
-        "/Users/user/repos/cefa/assets/piano/d3.wav",
-        "/Users/user/repos/cefa/assets/piano/d3s.wav",
-        "/Users/user/repos/cefa/assets/piano/e3.wav",
-        "/Users/user/repos/cefa/assets/piano/f3.wav",
-        "/Users/user/repos/cefa/assets/piano/f3s.wav",
-        "/Users/user/repos/cefa/assets/piano/g3.wav",
-        "/Users/user/repos/cefa/assets/piano/g3s.wav",
-        "/Users/user/repos/cefa/assets/piano/a3.wav",
-        "/Users/user/repos/cefa/assets/piano/a3s.wav",
-        "/Users/user/repos/cefa/assets/piano/b3.wav"
-    };
-    
     InitAudioDevice();
-    for (size_t i; i < soundFiles.size(); i++){
-        pianoSounds[i] = LoadSound(soundFiles[i]);
-        SetAudioStreamVolume(pianoSounds[i].stream, 0.5f);
-        if (!IsSoundReady(pianoSounds[i])) {
-            std::cerr << "Failed to load sound!" << std::endl;
-        }
-    }
+    pianoSounds = {
+        LoadSound("/Users/user/repos/cefa/assets/piano/c1.wav"),
+        LoadSound("/Users/user/repos/cefa/assets/piano/c1s.wav"),
+        LoadSound("/Users/user/repos/cefa/assets/piano/d1.wav"),
+        LoadSound("/Users/user/repos/cefa/assets/piano/d1s.wav"),
+        LoadSound("/Users/user/repos/cefa/assets/piano/e1.wav"),
+        LoadSound("/Users/user/repos/cefa/assets/piano/f1.wav"),
+        LoadSound("/Users/user/repos/cefa/assets/piano/f1s.wav"),
+        LoadSound("/Users/user/repos/cefa/assets/piano/g1.wav"),
+        LoadSound("/Users/user/repos/cefa/assets/piano/g1s.wav"),
+        LoadSound("/Users/user/repos/cefa/assets/piano/a1.wav"),
+        LoadSound("/Users/user/repos/cefa/assets/piano/a1s.wav"),
+        LoadSound("/Users/user/repos/cefa/assets/piano/b1.wav"),
+        LoadSound("/Users/user/repos/cefa/assets/piano/c2.wav"),
+        LoadSound("/Users/user/repos/cefa/assets/piano/c2s.wav"),
+        LoadSound("/Users/user/repos/cefa/assets/piano/d2.wav"),
+        LoadSound("/Users/user/repos/cefa/assets/piano/d2s.wav"),
+        LoadSound("/Users/user/repos/cefa/assets/piano/e2.wav"),
+        LoadSound("/Users/user/repos/cefa/assets/piano/f2.wav"),
+        LoadSound("/Users/user/repos/cefa/assets/piano/f2s.wav"),
+        LoadSound("/Users/user/repos/cefa/assets/piano/g2.wav"),
+        LoadSound("/Users/user/repos/cefa/assets/piano/g2s.wav"),
+        LoadSound("/Users/user/repos/cefa/assets/piano/a2.wav"),
+        LoadSound("/Users/user/repos/cefa/assets/piano/a2s.wav"),
+        LoadSound("/Users/user/repos/cefa/assets/piano/b2.wav"),
+        LoadSound("/Users/user/repos/cefa/assets/piano/c3.wav"),
+        LoadSound("/Users/user/repos/cefa/assets/piano/c3s.wav"),
+        LoadSound("/Users/user/repos/cefa/assets/piano/d3.wav"),
+        LoadSound("/Users/user/repos/cefa/assets/piano/d3s.wav"),
+        LoadSound("/Users/user/repos/cefa/assets/piano/e3.wav"),
+        LoadSound("/Users/user/repos/cefa/assets/piano/f3.wav"),
+        LoadSound("/Users/user/repos/cefa/assets/piano/f3s.wav"),
+        LoadSound("/Users/user/repos/cefa/assets/piano/g3.wav"),
+        LoadSound("/Users/user/repos/cefa/assets/piano/g3s.wav"),
+        LoadSound("/Users/user/repos/cefa/assets/piano/a3.wav"),
+        LoadSound("/Users/user/repos/cefa/assets/piano/a3s.wav"),
+        LoadSound("/Users/user/repos/cefa/assets/piano/b3.wav")
+    };
+
     std::cout << "Sound Loaded successfully" << std::endl;
 }
 
