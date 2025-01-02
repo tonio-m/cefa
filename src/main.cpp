@@ -18,8 +18,8 @@ struct SceneController {
         int listView001Active;
         int listview001ScrollIndex;
         float volume = 50;
-        int DropdownBox001Active;
-        int DropdownBox006Active;
+        int midiDriverIndex = 0;
+        int midiDeviceIndex = 0;
         std::vector<Chord> parsedChords;
         std::array<Music,36> pianoSounds;
         bool usePcKeyboard;
@@ -28,21 +28,21 @@ struct SceneController {
         std::array<int,36> lastPianoNotesActive;
         std::vector<std::string> listView001Keys = {
             "User Input",
-            "Cmaj/Amin ii-V-I",
-            "Fmaj/Dmin ii-V-I",
-            "Bbmaj/Gmin ii-V-I",
-            "Ebmaj/Cmin ii-V-I",
-            "Abmaj/Fmin ii-V-I",
-            "Dbmaj/Bbmin ii-V-I",
-            "Gbmaj/Ebmin ii-V-I",
-            "Bmaj/Abmin ii-V-I",
-            "Emaj/C#min ii-V-I",
-            "Amaj/F#min ii-V-I",
-            "Dmaj/Bmin ii-V-I",
-            "Gmaj/Emin ii-V-I"
+            "Cmaj",
+            "Dmin",
+            "Bbmaj",
+            "Ebmaj",
+            "Abmaj",
+            "Dbmaj",
+            "Gbmaj",
+            "Abmin",
+            "C#min",
+            "F#min",
+            "Bmin",
+            "Emin"
         };
         std::vector<std::string> listView001Values = {
-            "Dmin7,Fmaj7,Amin,Cmaj7",
+            "",
             "Dmin7,G7,Cmaj7,Fmaj7,Bmin7b5,E7,Amin7",
             "Gmin7,C7,Fmaj7,Bbmaj7,Emin7b5,A7,Dmin7",
             "Cmin7,F7,Bbmaj7,Ebmaj7,Amin7b5,D7,Gmin7",
@@ -63,7 +63,14 @@ struct SceneController {
     SceneController(){
         piano = Piano();
         midihandler = MidiHandler();
-        midihandler.init();
+        #ifdef __APPLE__
+                context.midiDeviceIndex = 0;
+        #elif defined(_WIN32)
+                context.midiDeviceIndex = 1;
+        #elif defined(__linux__)
+                context.midiDeviceIndex = 2;
+        #endif
+        midihandler.init(context.midiDeviceIndex);
         piano.initSound();
     }
 
@@ -92,9 +99,9 @@ struct SceneController {
             &context.listview001ScrollIndex,
             &context.listView001Active);
         GuiCheckBox((Rectangle){context.windowSize.x * 0.7f, context.windowSize.y * 0.52f, 20, 20}, "Loop", &context.loop);
-
+        GuiCheckBox((Rectangle){context.windowSize.x * 0.7f, context.windowSize.y * 0.58f, 20, 20}, "Use PC keyboard", &context.usePcKeyboard);
         // config button
-        if (GuiButton((Rectangle){context.windowSize.x * 0.42f, context.windowSize.y * 0.85f, 100, 20}, "Config")) {
+        if (GuiButton((Rectangle){context.windowSize.x * 0.36f, context.windowSize.y * 0.85f, 100, 20}, "Config")) {
             context.currentScene = SCENE_CONFIG;
         }
 
@@ -104,7 +111,7 @@ struct SceneController {
         }
 
         // go to piano Scene if ENTER is pressed
-        if (IsKeyDown(KEY_ENTER)) {
+        if (IsKeyDown(KEY_ENTER) || GuiButton((Rectangle){context.windowSize.x * 0.52f, context.windowSize.y * 0.85f, 100, 20}, "Play")) {
             std::vector<std::string> chords = splitString((std::string)context.textBox001Input, ",");
             context.parsedChords = parseChords(chords);
             context.currentScene = SCENE_PIANO;
@@ -147,21 +154,23 @@ struct SceneController {
         GuiGroupBox((Rectangle){ 48, 72, 226, 155 }, "Settings");
 
         GuiSlider((Rectangle){ 98, 165, 120, 16 }, "Volume", NULL, &context.volume, 0, 100);
-        GuiCheckBox((Rectangle){ 98, 189, 16, 14 }, "Use PC keyboard for input", &context.usePcKeyboard);
 
         if (GuiButton((Rectangle){ 98, 210, 120, 30 }, "Save Settings")) {
+            piano.setVolume(context.volume);
+            midihandler.init(context.midiDriverIndex);
+            midihandler.changePort(static_cast<unsigned int>(context.midiDeviceIndex));
             context.currentScene = SCENE_INPUT;
         }
 
-        // TODO: make this driver get the options from MidiHandler
         GuiLabel((Rectangle){ 58, 132, 120, 24 }, "Device");
-        if (GuiDropdownBox((Rectangle){ 97, 132, 120, 24 }, "(0) Reface CS;(1) Minilab MkII", &context.DropdownBox006Active, context.DropdownBox006EditMode)) {
+        std::string midiDevices = joinString(midihandler.getMidiInputs(),";");
+        if (GuiDropdownBox((Rectangle){ 97, 132, 120, 24 }, midiDevices.c_str(), &context.midiDeviceIndex, context.DropdownBox006EditMode)) {
             context.DropdownBox006EditMode = !context.DropdownBox006EditMode;
         }
 
-        // TODO: make this driver get the options from MidiHandler
         GuiLabel((Rectangle){ 58, 99, 120, 24 }, "Driver");
-        if (GuiDropdownBox((Rectangle){ 97, 99, 120, 24 }, "MacOSX Core; Windows MM; Linux Alsa; Linux JACK", &context.DropdownBox001Active, context.DropdownBox001EditMode)) {
+        std::string midiDrivers = joinString(midihandler.midiDriverNames,";");
+        if (GuiDropdownBox((Rectangle){ 97, 99, 120, 24 }, midiDrivers.c_str(), &context.midiDriverIndex, context.DropdownBox001EditMode)) {
             context.DropdownBox001EditMode = !context.DropdownBox001EditMode;
         }
 

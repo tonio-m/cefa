@@ -52,6 +52,12 @@ void Piano::initSound(){
     std::cout << "Sound Loaded successfully" << std::endl;
 }
 
+void Piano::setVolume(int volume){
+    for (auto& sound : pianoSounds){
+        SetSoundVolume(sound, volume/100.0f);
+    }
+}
+
 void Piano::draw(Vector2 &windowSize, Chord &blueChord, std::array<int,36> &pianoNotesActive){
     Color color;
     float size = 25.0f;

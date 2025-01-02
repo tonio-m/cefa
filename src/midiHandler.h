@@ -7,6 +7,9 @@ struct MidiHandler {
     RtMidiIn* midiin = nullptr;
     inline static std::array<int, 36> pianoNotesActive = {};
     inline static std::array<std::string, 12> noteStrings = {"c", "c#", "d", "d#", "e", "f", "f#", "g", "g#", "a", "a#", "b"};
+
+    inline static std::array<RtMidi::Api, 4> midiDriverApis = {RtMidi::MACOSX_CORE, RtMidi::WINDOWS_MM, RtMidi::LINUX_ALSA, RtMidi::UNIX_JACK};
+    inline static std::vector<std::string> midiDriverNames = {"MacOSX Core", "Windows MM", "Linux Alsa", "Linux JACK"};
     
     static void staticMidiCallback(double deltatime, std::vector<unsigned char>* message, void* userData) {
         if (message->size() > 1) {
@@ -21,8 +24,11 @@ struct MidiHandler {
         }
     }
 
-    bool init() {
-        midiin = new RtMidiIn(RtMidi::MACOSX_CORE);
+    void init(int midiDriverIndex) {
+        if (midiin) {
+            delete midiin;
+        }
+        midiin = new RtMidiIn(midiDriverApis[midiDriverIndex]);
         changePort(0);
     }
 

@@ -11,6 +11,7 @@ struct Piano {
 
     ~Piano();
     void initSound();
+    void setVolume(int volume);
     void draw(Vector2 &windowSize, Chord &blueChord, std::array<int,36> &pianoNotesActive);
     void playSounds(std::array<int,36> &activeNotes, std::array<int,36> &pastActiveNotes);
 };
