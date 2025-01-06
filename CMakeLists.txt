@@ -13,9 +13,19 @@ target_link_libraries(piano raylib)
 
 target_link_libraries(piano raygui)
 
-find_library(OpenGL_LIBRARY OpenGL)
-find_library(COCOA_LIBRARY Cocoa)
-find_library(IOKIT_LIBRARY IOKit)
-target_link_libraries(piano ${OpenGL_LIBRARY} ${COCOA_LIBRARY} ${IOKIT_LIBRARY})
+# find_library(OpenGL_LIBRARY OpenGL)
+# find_library(COCOA_LIBRARY Cocoa)
+# find_library(IOKIT_LIBRARY IOKit)
+
+# windows-specific
+find_package(OpenGL REQUIRED)
+if (OPENGL_FOUND)
+    message(STATUS "Found OpenGL: ${OPENGL_LIBRARIES}")
+else()
+    message(FATAL_ERROR "OpenGL not found!")
+endif()
+
+target_link_libraries(piano ${OPENGL_LIBRARIES})
+# target_link_libraries(piano ${OpenGL_LIBRARY} ${COCOA_LIBRARY} ${IOKIT_LIBRARY})
 set_target_properties(piano PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 

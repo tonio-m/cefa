@@ -28,7 +28,7 @@ std::string Chord::notesString() {
 
 bool Chord::compareNotes(std::array<int,36>& activeNotes) {
     for (int i : value){
-        if (!activeNotes[i]){
+        if (i < 0 || i >= activeNotes.size() || !activeNotes[i]) {
             return false;
         }
     }

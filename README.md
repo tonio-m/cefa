@@ -39,3 +39,22 @@ cmake --build . && lldb bin/piano
 # (gdb) run
 # (gdb) backtrace
 ```
+
+## Windows Build
+trying to generate a .exe for this shit
+
+
+- install MSYS2
+- pacman -S the mingw-w64_x86_64 versions of cmake, g++, make
+- add the path to this (C:\msys64\mingw64\bin\) to the PATH environment variable on windows ("Edit Environment Variables" on startup menu) 
+
+```bash
+conan install . --output-folder=build --build=missing
+xcopy assets build /E /I
+cd build
+cmake .. -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_EXPORT_COMPILE_COMMANDS=1
+cmake --build . 
+./bin/piano.exe
+```
+
+never make me do this again. I hate C++'s build system, and hate windows' development environment even more
