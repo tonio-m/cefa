@@ -11,42 +11,42 @@ Piano::~Piano(){
 void Piano::initSound(){
     InitAudioDevice();
     pianoSounds = {
-        LoadSound("/Users/user/repos/cefa/assets/piano/c1.wav"),
-        LoadSound("/Users/user/repos/cefa/assets/piano/c1s.wav"),
-        LoadSound("/Users/user/repos/cefa/assets/piano/d1.wav"),
-        LoadSound("/Users/user/repos/cefa/assets/piano/d1s.wav"),
-        LoadSound("/Users/user/repos/cefa/assets/piano/e1.wav"),
-        LoadSound("/Users/user/repos/cefa/assets/piano/f1.wav"),
-        LoadSound("/Users/user/repos/cefa/assets/piano/f1s.wav"),
-        LoadSound("/Users/user/repos/cefa/assets/piano/g1.wav"),
-        LoadSound("/Users/user/repos/cefa/assets/piano/g1s.wav"),
-        LoadSound("/Users/user/repos/cefa/assets/piano/a1.wav"),
-        LoadSound("/Users/user/repos/cefa/assets/piano/a1s.wav"),
-        LoadSound("/Users/user/repos/cefa/assets/piano/b1.wav"),
-        LoadSound("/Users/user/repos/cefa/assets/piano/c2.wav"),
-        LoadSound("/Users/user/repos/cefa/assets/piano/c2s.wav"),
-        LoadSound("/Users/user/repos/cefa/assets/piano/d2.wav"),
-        LoadSound("/Users/user/repos/cefa/assets/piano/d2s.wav"),
-        LoadSound("/Users/user/repos/cefa/assets/piano/e2.wav"),
-        LoadSound("/Users/user/repos/cefa/assets/piano/f2.wav"),
-        LoadSound("/Users/user/repos/cefa/assets/piano/f2s.wav"),
-        LoadSound("/Users/user/repos/cefa/assets/piano/g2.wav"),
-        LoadSound("/Users/user/repos/cefa/assets/piano/g2s.wav"),
-        LoadSound("/Users/user/repos/cefa/assets/piano/a2.wav"),
-        LoadSound("/Users/user/repos/cefa/assets/piano/a2s.wav"),
-        LoadSound("/Users/user/repos/cefa/assets/piano/b2.wav"),
-        LoadSound("/Users/user/repos/cefa/assets/piano/c3.wav"),
-        LoadSound("/Users/user/repos/cefa/assets/piano/c3s.wav"),
-        LoadSound("/Users/user/repos/cefa/assets/piano/d3.wav"),
-        LoadSound("/Users/user/repos/cefa/assets/piano/d3s.wav"),
-        LoadSound("/Users/user/repos/cefa/assets/piano/e3.wav"),
-        LoadSound("/Users/user/repos/cefa/assets/piano/f3.wav"),
-        LoadSound("/Users/user/repos/cefa/assets/piano/f3s.wav"),
-        LoadSound("/Users/user/repos/cefa/assets/piano/g3.wav"),
-        LoadSound("/Users/user/repos/cefa/assets/piano/g3s.wav"),
-        LoadSound("/Users/user/repos/cefa/assets/piano/a3.wav"),
-        LoadSound("/Users/user/repos/cefa/assets/piano/a3s.wav"),
-        LoadSound("/Users/user/repos/cefa/assets/piano/b3.wav")
+        LoadSound("/Applications/Cefa.app/Contents/Resources/assets/c1.wav"),
+        LoadSound("/Applications/Cefa.app/Contents/Resources/assets/c1s.wav"),
+        LoadSound("/Applications/Cefa.app/Contents/Resources/assets/d1.wav"),
+        LoadSound("/Applications/Cefa.app/Contents/Resources/assets/d1s.wav"),
+        LoadSound("/Applications/Cefa.app/Contents/Resources/assets/e1.wav"),
+        LoadSound("/Applications/Cefa.app/Contents/Resources/assets/f1.wav"),
+        LoadSound("/Applications/Cefa.app/Contents/Resources/assets/f1s.wav"),
+        LoadSound("/Applications/Cefa.app/Contents/Resources/assets/g1.wav"),
+        LoadSound("/Applications/Cefa.app/Contents/Resources/assets/g1s.wav"),
+        LoadSound("/Applications/Cefa.app/Contents/Resources/assets/a1.wav"),
+        LoadSound("/Applications/Cefa.app/Contents/Resources/assets/a1s.wav"),
+        LoadSound("/Applications/Cefa.app/Contents/Resources/assets/b1.wav"),
+        LoadSound("/Applications/Cefa.app/Contents/Resources/assets/c2.wav"),
+        LoadSound("/Applications/Cefa.app/Contents/Resources/assets/c2s.wav"),
+        LoadSound("/Applications/Cefa.app/Contents/Resources/assets/d2.wav"),
+        LoadSound("/Applications/Cefa.app/Contents/Resources/assets/d2s.wav"),
+        LoadSound("/Applications/Cefa.app/Contents/Resources/assets/e2.wav"),
+        LoadSound("/Applications/Cefa.app/Contents/Resources/assets/f2.wav"),
+        LoadSound("/Applications/Cefa.app/Contents/Resources/assets/f2s.wav"),
+        LoadSound("/Applications/Cefa.app/Contents/Resources/assets/g2.wav"),
+        LoadSound("/Applications/Cefa.app/Contents/Resources/assets/g2s.wav"),
+        LoadSound("/Applications/Cefa.app/Contents/Resources/assets/a2.wav"),
+        LoadSound("/Applications/Cefa.app/Contents/Resources/assets/a2s.wav"),
+        LoadSound("/Applications/Cefa.app/Contents/Resources/assets/b2.wav"),
+        LoadSound("/Applications/Cefa.app/Contents/Resources/assets/c3.wav"),
+        LoadSound("/Applications/Cefa.app/Contents/Resources/assets/c3s.wav"),
+        LoadSound("/Applications/Cefa.app/Contents/Resources/assets/d3.wav"),
+        LoadSound("/Applications/Cefa.app/Contents/Resources/assets/d3s.wav"),
+        LoadSound("/Applications/Cefa.app/Contents/Resources/assets/e3.wav"),
+        LoadSound("/Applications/Cefa.app/Contents/Resources/assets/f3.wav"),
+        LoadSound("/Applications/Cefa.app/Contents/Resources/assets/f3s.wav"),
+        LoadSound("/Applications/Cefa.app/Contents/Resources/assets/g3.wav"),
+        LoadSound("/Applications/Cefa.app/Contents/Resources/assets/g3s.wav"),
+        LoadSound("/Applications/Cefa.app/Contents/Resources/assets/a3.wav"),
+        LoadSound("/Applications/Cefa.app/Contents/Resources/assets/a3s.wav"),
+        LoadSound("/Applications/Cefa.app/Contents/Resources/assets/b3.wav")
     };
 
     std::cout << "Sound Loaded successfully" << std::endl;
@@ -127,7 +127,6 @@ void Piano::draw(Vector2 &windowSize, Chord &blueChord, std::array<int,36> &pian
 }
 
 void Piano::playSounds(std::array<int,36> &activeNotes, std::array<int,36> &pastActiveNotes){
-    // TODO: debug this, seems to not be working
     for(size_t i = 0; i < activeNotes.size(); i++){
         if (!(pastActiveNotes[i] == 1) && activeNotes[i] == 1){
             std::cout << "Playing Note: " << i << std::endl;

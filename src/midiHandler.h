@@ -32,7 +32,6 @@ struct MidiHandler {
         changePort(0);
     }
 
-    // TODO: use this function in config when displaying ports
     std::vector<std::string> getMidiInputs() {
         std::vector<std::string> ports;
         if (midiin) {
@@ -44,7 +43,6 @@ struct MidiHandler {
         return ports;
     }
 
-    // TODO: use this function in config when changing ports
     void changePort(unsigned int portNumber) {
         try {
             midiin->closePort();
