@@ -1,40 +1,31 @@
 # *cefa*
-A piano roll desktop application for Chord and Scale practice
+CEFA is an interactive application for practicing jazz chord progressions, built with raylib.
 
 ![cefa logo](https://github.com/user-attachments/assets/9632b436-7876-4347-bf45-d37593f006be)
 
 
+CEFA stands for Chord Etude For All, and is also the second inversion of Fmaj7!
 
-CEFA is an acronym that stands for Chord Etude For All, and that is also the notes of the second inversion of Fmaj7!
-I'm little by little working on this project in my free time, using it to learn more about C++ and it's environment (I come from python) and using the application for my own music practice.
+The project is in early development, with core features being actively implemented. Contributors are definitely welcome!
 
-As you can see it's very early in development. If you want to contribute feel free to open a PR, or email me
-at contact@mtonio.com if you want to have a chat about it.
+I use this application for my own music practice. If you want some feature implemented or have a chat about the project, open an issue or email me at contact@mtonio.com.
 
+## Getting Started
+Binaries for the project are present over at Releases, but you might need to compile it yourself depending on your platform.
 
 ## Build Instructions 
-midi on the piano roll might not work in platforms other than MacOS
-RtMidi which is being used supports other engines, it's just that I've hardcoded it (for now).
-
 ```bash
-conan install . --output-folder=build --build=missing
-cp -r assets build/
+conan install . --output-folder=build --build=missing -o "*:shared=False" -s build_type=Release
 cd build
-cmake .. -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_EXPORT_COMPILE_COMMANDS=1
-cmake --build . && bin/piano
-```
-
-```bash
-cd build
+cmake .. -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_EXPORT_COMPILE_COMMANDS=1 -DBUILD_SHARED_LIBS=OFF
 cmake --build . && bin/piano
 ```
 
 ### Debug Build 
-
 ```bash
-conan install . --output-folder=build --build=missing -s build_type=Debug
+conan install . --output-folder=build --build=missing -o "*:shared=False" -s build_type=Debug
 cd build
-cmake .. -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_EXPORT_COMPILE_COMMANDS=1
+cmake .. -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_EXPORT_COMPILE_COMMANDS=1 -DBUILD_SHARED_LIBS=OFF
 cmake --build . && lldb bin/piano
 # (gdb) run
 # (gdb) backtrace
